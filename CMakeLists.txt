@@ -74,7 +74,7 @@ target_link_libraries(${PROJECT_ELF_FILE} m)
 
 ADD_CUSTOM_TARGET(
     flash
-    COMMAND openocd  -c 'source [find interface/stlink-v2.cfg]' -c 'transport select hla_swd' -c 'source [find target/stm32f1x_stlink.cfg]' -c 'program ${PROJECT_ELF_FILE} verify reset exit'
+    COMMAND openocd  -c 'source [find interface/stlink-v2.cfg]' -c 'transport select hla_swd' -c 'source [find target/stm32f1x.cfg]' -c 'program ${PROJECT_ELF_FILE} verify reset exit'
     )
 
 ADD_DEPENDENCIES(flash ${PROJECT_ELF_FILE})
@@ -88,16 +88,12 @@ ADD_CUSTOM_TARGET(clean_all
     COMMAND git clean -d ${PROJECT_SOURCE_DIR} -f -f -x
     )
 
-#TODO
-#TODO
-set(OPENOCD_BOARD "board/stm32f429disc1.cfg")
-
-# ADD_CUSTOM_TARGET(
-#     debug
-    # COMMAND openocd -f ${OPENOCD_BOARD} >/dev/null 2>&1 & sleep 2
-    # COMMAND ${TARGET_TRIPLET}-gdb -quiet -tui -command=${CMAKE_CURRENT_LIST_DIR}/GDBCommands -se ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.elf
+ADD_CUSTOM_TARGET(
+    debug
+    COMMAND openocd  -c 'source [find interface/stlink-v2.cfg]' -c 'transport select hla_swd' -c 'source [find target/stm32f1x_stlink.cfg]' -c 'reset_config srst_nogate'
+    COMMAND ${TARGET_TRIPLET}-gdb -tui -command='target remote localhost:3333; monitor reset halt; monitor stm32f1x unlock 0; load ${PROJECT_ELF_FILE};'
     # COMMAND killall -15 openocd
-    # )
+    )
 
 # ADD_DEPENDENCIES(debug flash)
 
