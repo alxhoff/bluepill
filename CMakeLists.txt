@@ -40,16 +40,16 @@ SET(FREERTOS_HEAP_IMPL 4)
 # SET(CMAKE_C_FLAGS "-mcpu=cortex-m4 -march=armv7e-m -mtune=cortex-m4 -mlittle-endian -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -std=c99 -Wall -Wunused-value -O3 -ffast-math -ffunction-sections -fdata-sections -Wl,--gc-sections -fno-common --param max-inline-insns-single=1000 -DUSE_STDPERIPH_DRIVER -DGFX_USE_OS_FREERTOS=TRUE -DSTM32F429_439xx=TRUE -g3")
 
 FIND_PACKAGE(FreeRTOS REQUIRED)
-FIND_PACKAGE(STM32HAL REQUIRED)
-FIND_PACKAGE(STM32LL REQUIRED)
 FIND_PACKAGE(CMSIS REQUIRED)
+FIND_PACKAGE(STM32HAL COMPONENTS rcc  gpio REQUIRED)
+# FIND_PACKAGE(STM32LL REQUIRED)
 
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}
     "${PROJECT_SOURCE_DIR}/inc"
     ${FreeRTOS_INCLUDE_DIRS}
     ${STM32HAL_INCLUDE_DIR}
-    ${STM32LL_INCLUDE_DIR}
+    # ${STM32LL_INCLUDE_DIR}
     ${CMSIS_INCLUDE_DIRS}
     )
 
@@ -63,11 +63,9 @@ SET(PROJECT_BIN_FILE ${CMAKE_PROJECT_NAME}.bin)
 SET(PROJECT_SOURCES
     ${USER_SOURCES}
     ${STM32HAL_SOURCES}
-    ${STM32LL_SOURCES}
+    # ${STM32LL_SOURCES}
     ${FreeRTOS_SOURCES}
     ${CMSIS_SOURCES}
-    startup_stm32f103xb.s
-    system_stm32f1xx.c
     )
 
 MESSAGE("CMSIS INC: ${CMSIS_INCLUDE_DIRS}")
