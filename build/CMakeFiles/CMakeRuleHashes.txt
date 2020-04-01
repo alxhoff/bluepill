@@ -1,0 +1,7 @@
+# Hashes of file build rules.
+2321792848187c871d12bf4d82e073bc CMakeFiles/STM32F1_bluepill.elf.bin
+5df313c3ebc7ee49448db9758b3aa4de CMakeFiles/STM32F1_bluepill.elf.hex
+8140e469c338a26fee2176484e6ef22e CMakeFiles/clean_all
+7f5cbc034c747817f28fa13edc8f24d9 CMakeFiles/clean_cmake
+a012798d4e6b26717d720b6de029bd10 CMakeFiles/clean_lib
+ec0d0d0c7a3c4fdc3da2d1fe4e00cb50 cleanlib

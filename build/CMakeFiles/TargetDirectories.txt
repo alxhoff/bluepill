@@ -1,0 +1,8 @@
+/home/alxhoff/git/GitHub/bluepill/build/CMakeFiles/rebuild_cache.dir
+/home/alxhoff/git/GitHub/bluepill/build/CMakeFiles/edit_cache.dir
+/home/alxhoff/git/GitHub/bluepill/build/CMakeFiles/STM32F1_bluepill.elf.dir
+/home/alxhoff/git/GitHub/bluepill/build/CMakeFiles/STM32F1_bluepill.elf.bin.dir
+/home/alxhoff/git/GitHub/bluepill/build/CMakeFiles/clean_cmake.dir
+/home/alxhoff/git/GitHub/bluepill/build/CMakeFiles/clean_all.dir
+/home/alxhoff/git/GitHub/bluepill/build/CMakeFiles/clean_lib.dir
+/home/alxhoff/git/GitHub/bluepill/build/CMakeFiles/STM32F1_bluepill.elf.hex.dir
