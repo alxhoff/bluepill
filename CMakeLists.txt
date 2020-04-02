@@ -88,14 +88,22 @@ ADD_CUSTOM_TARGET(clean_all
     COMMAND git clean -d ${PROJECT_SOURCE_DIR} -f -f -x
     )
 
+# ADD_CUSTOM_TARGET(
+#     debug
+#     COMMAND openocd  -c 'source [find interface/stlink-v2.cfg]' -c 'transport select hla_swd' -c 'source [find target/stm32f1x_stlink.cfg]' -c 'reset_config srst_nogate'
+#     COMMAND ${TARGET_TRIPLET}-gdb -tui -command='target remote localhost:3333; monitor reset halt; monitor stm32f1x unlock 0; load ${PROJECT_ELF_FILE};'
+#     # COMMAND killall -15 openocd
+#     )
+
 ADD_CUSTOM_TARGET(
     debug
-    COMMAND openocd  -c 'source [find interface/stlink-v2.cfg]' -c 'transport select hla_swd' -c 'source [find target/stm32f1x_stlink.cfg]' -c 'reset_config srst_nogate'
-    COMMAND ${TARGET_TRIPLET}-gdb -tui -command='target remote localhost:3333; monitor reset halt; monitor stm32f1x unlock 0; load ${PROJECT_ELF_FILE};'
-    # COMMAND killall -15 openocd
+    COMMAND openocd  -c 'source [find interface/stlink-v2.cfg]' -c 'transport select hla_swd' -c 'source [find target/stm32f1x_stlink.cfg]' -c 'reset_config srst_nogate' >/dev/null 2&1 & sleep 2
+    COMMAND ${TARGET_TRIPLET}-gdb -tui -command=${CMAKE_CURRENT_LIST_DIR}/GDBCommands -se ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.elf
+    # COMMAND ${TARGET_TRIPLET}-gdb -tui -command='target remote localhost:3333; monitor reset halt; monitor stm32f1x unlock 0; load ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.elf; break main; continue;'
+    COMMAND killall -15 openocd
     )
 
-# ADD_DEPENDENCIES(debug flash)
+ADD_DEPENDENCIES(debug ${PROJECT_ELF_FILE})
 
 STM32_SET_TARGET_PROPERTIES(${PROJECT_ELF_FILE})
 STM32_ADD_HEX_BIN_TARGETS(${PROJECT_ELF_FILE})
