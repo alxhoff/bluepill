@@ -1,4 +1,6 @@
 lib
+build
+
 # Prerequisites
 *.d
 
