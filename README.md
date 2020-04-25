@@ -85,6 +85,7 @@ Enjoy.
 
 ## Known issues and solutions
 
+### Unable to flash
 For reasons unknown to me, sometimes boards don't want to cooperated. Giving output similar to 
 
 ``` bash
@@ -102,3 +103,20 @@ shutdown command invoked
 ```
 
 I have managed to solve this issue by holding the reset button when running `make flash` then releasing it half way through, you'll notice the point when the programming procedure sort of hangs for a split second, release at this moment. 
+
+### Fails to start target after flashing
+
+Sometimes when using the board in an application it fails to run after flashing, generating an output similar to
+
+```bash
+target halted due to breakpoint, current mode: Thread 
+xPSR: 0x61000000 pc: 0x2000002e msp: 0x20004ffc
+verified 6696 bytes in 0.142008s (46.047 KiB/s)
+** Verified OK **
+** Resetting Target **
+in procedure 'program' 
+in procedure 'reset' called at file "embedded:startup.tcl", line 529
+in procedure 'ocd_bouncer'
+```
+
+This is the result of the board being possibly underpowered making it unstable, provide more power to the board.

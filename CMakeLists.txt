@@ -26,9 +26,9 @@ set(CMAKE_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/lib)
 FIND_PACKAGE(Git REQUIRED)
 set(CUBE_SOURCE "${CMAKE_LIBRARY_PATH}/STM32F1-Cube-Firmware")
 if(EXISTS ${CUBE_SOURCE})
-    message("Cube FW directory exists")
+    message(STATUS "Cube FW directory exists")
 else()
-    message("Getting Cube Firmware")
+    message(STATUS "Getting Cube Firmware")
     set(GIT_REPOSITORY "https://github.com/alxhoff/STM32F1-Cube-Firmware.git")
     execute_process(COMMAND ${GIT_EXECUTABLE} clone ${GIT_REPOSITORY} ${CUBE_SOURCE})
 endif()
@@ -72,9 +72,17 @@ ADD_EXECUTABLE(
 
 target_link_libraries(${PROJECT_ELF_FILE} m)
 
+IF(INTERFACE)
+    STRING(CONCAT ST_INTERFACE ${INTERFACE} ".cfg")
+    MESSAGE(STATUS "Using interface: ${ST_INTERFACE}")
+ELSE()
+    SET(ST_INTERFACE "stlink-v2.cfg")
+    MESSAGE(STATUS "No interface provided, using default ${ST_INTERFACE}")
+ENDIF()
+
 ADD_CUSTOM_TARGET(
     flash
-    COMMAND openocd  -c 'source [find interface/stlink-v2.cfg]' -c 'transport select hla_swd' -c 'source [find target/stm32f1x.cfg]' -c 'program ${PROJECT_ELF_FILE} verify reset exit'
+    COMMAND openocd  -c 'source [find interface/${ST_INTERFACE}]' -c 'transport select hla_swd' -c 'source [find target/stm32f1x.cfg]' -c 'program ${PROJECT_ELF_FILE} verify reset exit'
     )
 
 ADD_DEPENDENCIES(flash ${PROJECT_ELF_FILE})
@@ -90,7 +98,7 @@ ADD_CUSTOM_TARGET(clean_all
 
 ADD_CUSTOM_TARGET(
     debug
-    COMMAND openocd  -c 'source [find interface/stlink-v2.cfg]' -c 'transport select hla_swd' -c 'source [find target/stm32f1x_stlink.cfg]' -c 'reset_config srst_nogate' >/dev/null 2&1 & sleep 2
+    COMMAND openocd  -c 'source [find interface/${ST_INTERFACE}]' -c 'transport select hla_swd' -c 'source [find target/stm32f1x_stlink.cfg]' -c 'reset_config srst_nogate' >/dev/null 2&1 & sleep 2
     COMMAND ${TARGET_TRIPLET}-gdb -tui -command=${CMAKE_CURRENT_LIST_DIR}/GDBCommands -se ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.elf
     COMMAND killall -15 openocd
     )
