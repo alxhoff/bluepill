@@ -82,3 +82,23 @@ make clean_all #Removes cmake files, build files and libraries
 ```
 
 Enjoy.
+
+## Known issues and solutions
+
+For reasons unknown to me, sometimes boards don't want to cooperated. Giving output similar to 
+
+``` bash
+...
+Info : STLINK v2 JTAG v28 API v2 SWIM v7 VID 0x0483 PID 0x3748
+Info : using stlink api v2
+Info : Target voltage: 3.249867
+Error: init mode failed (unable to connect to the target)
+in procedure 'program'
+in procedure 'init' called at file "embedded:startup.tcl", line 495
+in procedure 'ocd_bouncer'
+** OpenOCD init failed **
+shutdown command invoked
+...
+```
+
+I have managed to solve this issue by holding the reset button when running `make flash` then releasing it half way through, you'll notice the point when the programming procedure sort of hangs for a split second, release at this moment. 
